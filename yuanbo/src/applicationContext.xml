@@ -1,15 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
     xmlns:lang="http://www.springframework.org/schema/lang"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/lang
-        http://www.springframework.org/schema/lang/spring-lang.xsd">
-
+    xmlns:util="http://www.springframework.org/schema/util" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">  
+		
+	<context:component-scan base-package="com.yuanbook.*"></context:component-scan>
 
     <bean id="helloSpring" class="com.yuanbook.action.HelloSpring">
     	<property name="name" value="kingyuanbo"></property>
     </bean>
 
+	<bean id="car" class="com.yuanbook.bean.Car">
+		<constructor-arg value="Audi"></constructor-arg>
+		<constructor-arg value="Shanghai"></constructor-arg>
+		<constructor-arg value="300000"></constructor-arg>
+	</bean>
+	
+	<bean id="car2" class="com.yuanbook.bean.Car">
+		<constructor-arg value="路虎"></constructor-arg>
+		<constructor-arg value="美国"></constructor-arg>
+		<constructor-arg value="180" type="int"></constructor-arg>
+	</bean>
+	
+	<bean id="person" class="com.yuanbook.bean.Person">
+		<property name="name" value="king" ></property>
+		<property name="age" value="39"></property>
+		<property name="car" ref="car2"></property>
+	</bean>
+	
+	<bean id="personCars" class="com.yuanbook.bean.PersonCars">
+		<property name="name" value="Meini" ></property>
+		<property name="age" value="35"></property>
+		<property name="cars">
+			<list> 
+				<ref bean="car"/>
+				<ref bean="car2"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="personMap" class="com.yuanbook.bean.PersonMap">
+		<property name="name" value="Meini" ></property>
+		<property name="age" value="35"></property>
+		<property name="cars">
+			<map> 
+				<entry key="国内" value-ref="car"/>
+				<entry key="美国" value-ref="car2"/>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="dataSource" class="com.yuanbook.bean.DataSource">
+		<property name="property">
+			<props>
+				<prop key="name">jzp</prop>
+				<prop key="age">39</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<util:list id="cars">
+		<ref bean="car"/>
+		<ref bean="car2"/>
+	</util:list>
+	
+	<!--  
+	<context:property-placeholder location="classpath:"></context:property-placeholder>
+	-->
+	
+	
+	<!-- 使AspectJ注解起作用，自动为匹配的类生成代理对象 -->
+	<aop:aspectj-autoproxy/>
+	
 </beans>
